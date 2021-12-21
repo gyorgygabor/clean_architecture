@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="list_item_height">150dp</dimen>
+    <dimen name="list_item_backdrop_size">150dp</dimen>
+    <dimen name="margin_small">5dp</dimen>
+    <dimen name="margin_medium">8dp</dimen>
+</resources>

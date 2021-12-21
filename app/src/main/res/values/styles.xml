@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.App" parent="Theme.MaterialComponents.Light">
+
+        <!-- Original AppCompat attributes. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="android:colorBackground">@color/color_background</item>
+        <item name="colorError">@color/color_error</item>
+
+        <!-- New MaterialComponents attributes. -->
+        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
+        <item name="colorSecondaryVariant">@color/color_secondary_variant</item>
+        <item name="colorSurface">@color/color_surface</item>
+
+        <!-- here we can define other styles if need e.g. general button style, etc.-->
+    </style>
+
+    <style name="ListItem_Title">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:lines">1</item>
+        <item name="android:layout_margin">@dimen/margin_medium</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ListItem_Shape">
+        <item name="android:layout_margin">@dimen/margin_medium</item>
+        <item name="cardCornerRadius">@dimen/margin_medium</item>
+        <item name="cardElevation">@dimen/margin_medium</item>
+    </style>
+
+    <style name="ListItem_Description">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:layout_margin">@dimen/margin_medium</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">4</item>
+    </style>
+
+</resources>
