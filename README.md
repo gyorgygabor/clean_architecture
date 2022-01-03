@@ -10,6 +10,7 @@ This is a sample Movie list application. The architecture is following the Compo
 - LiveData
 - Coroutines
 - Picasso
+- MockK
 
 ## License
 
