@@ -13,4 +13,5 @@ ext{
     picasso = '2.71828'
     cardview = '1.0.0'
     recyclerview = '1.2.1'
+    mockk = '1.12.2'
 }

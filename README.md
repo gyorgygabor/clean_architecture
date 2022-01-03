@@ -13,5 +13,5 @@ This is a sample Movie list application. The architecture is following the Compo
 
 ## License
 
-Appach 2.0 - 
+Apache 2.0 -
 Free to use

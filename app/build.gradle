@@ -70,6 +70,8 @@ dependencies {
     
     // recycler view
     implementation "androidx.recyclerview:recyclerview:$recyclerview"
+
+    testImplementation "io.mockk:mockk:$mockk"
 }
 
 
