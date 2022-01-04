@@ -14,4 +14,5 @@ ext{
     cardview = '1.0.0'
     recyclerview = '1.2.1'
     mockk = '1.12.2'
+    compose_version = '1.0.5'
 }

@@ -60,7 +60,7 @@ class MoviesFragment : Fragment(),
         observeViewEvent(viewModel) {
             // shows the corresponding error dialogs
             handleNetworkErrorEvent(it)
-        }
+        }com.android.tools.build:gradle
 
         // For navigation we can create a navEvent using the SingleLiveEvent and observe the navigation events here.
     }
