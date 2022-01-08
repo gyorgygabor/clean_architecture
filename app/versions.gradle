@@ -1,10 +1,10 @@
 ext{
 
 
-    constraintlayout = '2.0.4'
-    material = '1.3.0'
-    appcompact = '1.2.0'
-    corektx = '1.3.2'
+    constraintlayout = '2.1.2'
+    material = '1.4.0'
+    appcompact = '1.4.0'
+    corektx = '1.7.0'
     navigation = '2.3.5'
     coroutines = '1.5.2'
     retrofit = '2.9.0'
