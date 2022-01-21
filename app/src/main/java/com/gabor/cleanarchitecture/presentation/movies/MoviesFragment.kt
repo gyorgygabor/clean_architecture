@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gabor.cleanarchitecture.presentation.utils.statehandler.*
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.handleNetworkErrorEvent
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.observeState
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.observeViewEvent
 import com.gabor.cleanarchitecture.presentation.utils.viewbinding.ViewBindingHolder
 import com.gabor.cleanarchitecture.presentation.utils.viewbinding.ViewBindingHolderImpl
 import dagger.hilt.android.AndroidEntryPoint
