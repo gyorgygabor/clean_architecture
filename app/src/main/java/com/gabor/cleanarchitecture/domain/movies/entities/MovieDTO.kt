@@ -2,7 +2,7 @@ package com.gabor.cleanarchitecture.domain.movies.entities
 
 import com.google.gson.annotations.SerializedName
 
-class MovieDTO(
+open class MovieDTO(
     @SerializedName("adult") val adult: Boolean,
     @SerializedName("backdrop_path") val backdropPath: String,
     @SerializedName("genre_ids") val genreIds: List<Int>,
@@ -16,5 +16,9 @@ class MovieDTO(
     @SerializedName("title") val title: String,
     @SerializedName("video") val video: Boolean,
     @SerializedName("vote_average") val voteAverage: Double,
-    @SerializedName("vote_count") val voteCount: Int
+    @SerializedName("vote_count") val voteCount: Int,
+
+    // Used in movie details
+    @SerializedName("videos") val videos: VideosDTO?,
+    @SerializedName("genres") val genres: List<GenreDTO>?
 )

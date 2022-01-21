@@ -3,6 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/compose-model-1642175103142.xml" value="0.15172079495879787" />
+        <entry key="../../../../layout/compose-model-1642405425427.xml" value="0.3572467280659234" />
+        <entry key="../../../../layout/compose-model-1642583648597.xml" value="0.2" />
+        <entry key="../../../../layout/compose-model-1642584312421.xml" value="0.21522055259331072" />
+        <entry key="../../../../layout/compose-model-1642584430795.xml" value="0.21522055259331072" />
+        <entry key="../../../../layout/compose-model-1642586890256.xml" value="0.11" />
+        <entry key="../../../../layout/compose-model-1642591349183.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1642622599837.xml" value="0.22" />
+        <entry key="../../../../layout/compose-model-1642626257904.xml" value="0.16" />
+        <entry key="../../../../layout/compose-model-1642666608519.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1642668948808.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1642672666274.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1642674205101.xml" value="0.16" />
+        <entry key="../../../../layout/compose-model-1642693703388.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1642706214259.xml" value="0.22" />
+        <entry key="../../../../layout/compose-model-1642709350812.xml" value="0.3703344643722734" />
+        <entry key="../../../../layout/compose-model-1642710790237.xml" value="0.12354463130659767" />
+        <entry key="../../../../layout/compose-model-1642763691984.xml" value="0.11917852522639069" />
         <entry key="..\:/Users/AnnaGyorgy/.gradle/caches/transforms-3/d17aeda5ac9825009a6ba9037fbacd81/transformed/jetified-appcompat-resources-1.2.0/res/drawable/abc_vector_test.xml" value="0.1703125" />
         <entry key="..\:/Users/AnnaGyorgy/AndroidStudioProjects/GaborAssessment/app/src/main/res/drawable/ic_no_collections.xml" value="0.15364583333333334" />
         <entry key="..\:/Users/AnnaGyorgy/AndroidStudioProjects/GaborAssessment/app/src/main/res/layout/activity_main.xml" value="0.1375" />
@@ -20,10 +38,12 @@
         <entry key="..\:/Users/AnnaGyorgy/AndroidStudioProjects/GaborAssessment2/app/src/main/res/layout/fragment_movies.xml" value="0.176" />
         <entry key="..\:/Users/AnnaGyorgy/AndroidStudioProjects/GaborAssessment2/app/src/main/res/layout/fragment_second.xml" value="0.15416666666666667" />
         <entry key="..\:/Users/AnnaGyorgy/AndroidStudioProjects/GaborAssessment2/app/src/main/res/layout/list_item.xml" value="0.4" />
+        <entry key="app/src/main/res/drawable-v24/outline_grade_24.xml" value="0.15885416666666666" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.13627152988855115" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

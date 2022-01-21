@@ -12,14 +12,14 @@ import javax.inject.Inject
 /**
  * Obtains the movies list from the backend based on the user`s locale, convert the response to UI model.
  */
-class GetMoviesUseCase @Inject constructor(
+class GetMovieDetailsUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository
-) : Interactor<Int, List<MovieDTO>>() {
+) : Interactor<Int, MovieDTO>() {
 
-    override suspend fun run(params: Int): Result<Throwable, List<MovieDTO>> {
+    override suspend fun run(params: Int): Result<Throwable, MovieDTO> {
         val movies = try {
             val locale = LocaleUtils.getCurrentLocaleAsString()
-            moviesRepository.getMovies(locale, params).results
+            moviesRepository.getMovieDetails(locale, params)
         } catch (e: Exception) {
             // Failures are handled by the general error handler. See: ErrorHandler
             return failure(e)

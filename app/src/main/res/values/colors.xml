@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary_dark">#FFBB86FC</color>
+    <color name="color_primary_dark">#FFA90E</color>
     <color name="color_black">#FF000000</color>
     <color name="color_white">#FFFFFFFF</color>
-    <color name="color_primary">#6200EE</color>
-    <color name="color_secondary">#03DAC6</color>
-    <color name="color_background">#E2DCDB</color>
-    <color name="color_error">#F16157</color>
-    <color name="color_primary_variant">#3700B3</color>
-    <color name="color_secondary_variant">#018786</color>
+    <color name="color_primary">#FF96490b</color>
+    <color name="color_secondary">#FF755847</color>
+    <color name="color_background">#FFfcfcfc</color>
+    <color name="color_error">#FFba1b1b</color>
+    <color name="color_primary_variant">#FF321200</color>
+    <color name="color_secondary_variant">#FF2b1609</color>
     <color name="color_surface">#FFFFFF</color>
     <color name="color_progressbar_bg">#80000000</color>
+    <color name="color_gradient_black">#8D000000</color>
+    <color name="color_gradient_white">#8DFFFFFF</color>
+    <color name="color_star">#FFA90E</color>
 </resources>

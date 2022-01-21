@@ -10,4 +10,10 @@
         android:name="com.gabor.cleanarchitecture.presentation.movies.MoviesFragment"
         android:label="@string/title_movies_fragment">
     </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.gabor.cleanarchitecture.presentation.moviedetails.MovieDetailsFragment"
+        android:label="@string/title_movie_details_fragment">
+    </fragment>
 </navigation>
