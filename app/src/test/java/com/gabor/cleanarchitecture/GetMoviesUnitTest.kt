@@ -1,3 +1,18 @@
+/*
+ * Copyright 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.gabor.cleanarchitecture
 
 import com.gabor.cleanarchitecture.data.remote.SessionProvider
@@ -10,9 +25,8 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -23,8 +37,8 @@ class GetMoviesUnitTest {
 
     private val movieTestObject = MovieViewItem("Spider Man", "Some description", "url")
 
-    private val repository : MoviesRepository = mockk()
-    private val sessionProvider : SessionProvider = mockk()
+    private val repository: MoviesRepository = mockk()
+    private val sessionProvider: SessionProvider = mockk()
     private val getMoviesInteractor = spyk(GetMoviesUseCase(repository, sessionProvider))
 
     @Test
@@ -34,13 +48,13 @@ class GetMoviesUnitTest {
         coEvery { getMoviesInteractor() } returns Result.success(expectedResponse)
 
         val actualResponse = getMoviesInteractor()
-        assertEquals(actualResponse.isRight , true)
+        assertEquals(actualResponse.isRight, true)
 
         val responseMovie = (actualResponse as Result.Right).b.first()
 
-        assertEquals(responseMovie.title , movieTestObject.title)
-        assertEquals(responseMovie.description , movieTestObject.description)
-        assertEquals(responseMovie.imageUrl , movieTestObject.imageUrl)
+        assertEquals(responseMovie.title, movieTestObject.title)
+        assertEquals(responseMovie.description, movieTestObject.description)
+        assertEquals(responseMovie.imageUrl, movieTestObject.imageUrl)
     }
 
     @Test
@@ -49,9 +63,9 @@ class GetMoviesUnitTest {
         coEvery { getMoviesInteractor() } returns Result.failure(expectedResponse)
 
         val actualResponse = getMoviesInteractor()
-        assertEquals(actualResponse.isLeft , true)
+        assertEquals(actualResponse.isLeft, true)
 
         val throwable = (actualResponse as Result.Left).a
-        assertEquals(throwable , expectedResponse)
+        assertEquals(throwable, expectedResponse)
     }
 }

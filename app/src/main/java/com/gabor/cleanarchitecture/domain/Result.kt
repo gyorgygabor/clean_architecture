@@ -1,5 +1,19 @@
+/*
+ * Copyright 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.gabor.cleanarchitecture.domain
-
 
 /**
  * Represents a value of one of two possible types.
@@ -34,7 +48,6 @@ sealed class Result<out L, out R> {
      */
     fun <L> left(a: L) = Result.Left(a)
 
-
     /**
      * Creates a Left type.
      * @see Right
@@ -52,7 +65,6 @@ sealed class Result<out L, out R> {
             is Right -> onSuccess(b)
         }
 
-
     companion object {
         /**
          * Returns an instance that encapsulates the given [value] as successful value.
@@ -67,4 +79,3 @@ sealed class Result<out L, out R> {
             Result.Left(exception)
     }
 }
-
