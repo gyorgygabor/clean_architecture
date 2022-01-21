@@ -1,4 +1,4 @@
-  name: pushEvent
+  name: Build
   on: [push]
   jobs:
     check-code-compilation:
