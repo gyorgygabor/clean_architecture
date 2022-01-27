@@ -22,9 +22,9 @@ steps:
   inputs:
     apkFiles: '**/*.apk'
     apksignerKeystoreFile: 'movies_keystore'
-    apksignerKeystorePassword: 'moviedb'
-    apksignerKeystoreAlias: 'key0'
-    apksignerKeyPassword: 'moviedb'
+    apksignerKeystorePassword: '$(keystorePass)'
+    apksignerKeystoreAlias: '$(keystoreAlias)'
+    apksignerKeyPassword: '$(keystorePass)'
 - task: Gradle@2
   inputs:
     workingDirectory: ''
