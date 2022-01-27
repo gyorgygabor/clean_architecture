@@ -15,6 +15,9 @@ steps:
     versionSpec: '11'
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile: 'movies_keystore'
 - task: AndroidSigning@3
   inputs:
     apkFiles: '**/*.apk'
