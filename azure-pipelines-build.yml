@@ -17,11 +17,11 @@ steps:
     jdkSourceOption: 'PreInstalled'
 - task: DownloadSecureFile@1
   inputs:
-    secureFile: 'movies_keystore.jks'
+    secureFile: 'movies_keystore'
 - task: AndroidSigning@3
   inputs:
     apkFiles: '**/*.apk'
-    apksignerKeystoreFile: 'movies_keystore.jks'
+    apksignerKeystoreFile: 'movies_keystore'
     apksignerKeystorePassword: '$(keystorePass)'
     apksignerKeystoreAlias: '$(keystoreAlias)'
     apksignerKeyPassword: '$(keystorePass)'
