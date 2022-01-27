@@ -15,6 +15,13 @@ steps:
     versionSpec: '11'
     jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
+- task: AndroidSigning@3
+  inputs:
+    apkFiles: '**/*.apk'
+    apksignerKeystoreFile: 'movies_keystore.keystore'
+    apksignerKeystorePassword: 'moviedb'
+    apksignerKeystoreAlias: 'key0'
+    apksignerKeyPassword: 'moviedb'
 - task: Gradle@2
   inputs:
     workingDirectory: ''
