@@ -18,7 +18,7 @@ steps:
 - task: AndroidSigning@3
   inputs:
     apkFiles: '**/*.apk'
-    apksignerKeystoreFile: 'movies_keystore.keystore'
+    apksignerKeystoreFile: 'movies_keystore'
     apksignerKeystorePassword: 'moviedb'
     apksignerKeystoreAlias: 'key0'
     apksignerKeyPassword: 'moviedb'
