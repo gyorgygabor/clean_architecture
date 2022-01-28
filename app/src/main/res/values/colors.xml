@@ -14,5 +14,5 @@
     <color name="color_gradient_black">#8D000000</color>
     <color name="color_gradient_white">#8DFFFFFF</color>
     <color name="color_star">#FFA90E</color>
-    <color name="color_gradient">#5201A17</color>
+    <color name="color_gradient">#0D201A17</color>
 </resources>
