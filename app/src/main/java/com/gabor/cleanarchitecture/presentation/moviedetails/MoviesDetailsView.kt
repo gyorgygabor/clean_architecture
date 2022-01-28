@@ -1,8 +1,34 @@
+/*
+ * Copyright 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.gabor.cleanarchitecture.presentation.moviedetails
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -31,10 +57,13 @@ fun MoviesDetailsView(movieDetails: MovieDetailsViewItem) {
     ) {
         // Cover image
         Image(
-            painter = rememberImagePainter(data = movieDetails.backdropImageUrl, builder = {
-                crossfade(true)
-                placeholder(R.drawable.ic_placeholder_movie)
-            }),
+            painter = rememberImagePainter(
+                data = movieDetails.backdropImageUrl,
+                builder = {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_placeholder_movie)
+                }
+            ),
             contentDescription = null,
             modifier = Modifier.requiredHeight(350.dp),
             contentScale = ContentScale.Crop
@@ -98,7 +127,6 @@ fun MoviesDetailsView(movieDetails: MovieDetailsViewItem) {
                         ) {
                             Text(stringResource(R.string.label_trailer))
                         }
-
                     }
                     Text(
                         text = stringResource(R.string.label_storyline),
@@ -114,25 +142,24 @@ fun MoviesDetailsView(movieDetails: MovieDetailsViewItem) {
                     )
                 }
             }
-
-
         }
         // Poster
         Column() {
             Spacer(modifier = Modifier.height(200.dp))
             Image(
-                painter = rememberImagePainter(data = movieDetails.posterImageUrl, builder = {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_placeholder_movie)
-                }),
+                painter = rememberImagePainter(
+                    data = movieDetails.posterImageUrl,
+                    builder = {
+                        crossfade(true)
+                        placeholder(R.drawable.ic_placeholder_movie)
+                    }
+                ),
                 contentDescription = "null",
                 modifier = Modifier
                     .requiredWidth(175.dp)
                     .padding(start = 20.dp),
                 contentScale = ContentScale.Fit,
             )
-
         }
-
     }
 }

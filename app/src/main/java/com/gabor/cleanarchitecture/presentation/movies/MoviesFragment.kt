@@ -32,12 +32,17 @@ import androidx.navigation.fragment.findNavController
 import com.gabor.cleanarchitecture.R
 import com.gabor.cleanarchitecture.presentation.moviedetails.MovieDetailsViewItem
 import com.gabor.cleanarchitecture.presentation.theme.AppTheme
-import com.gabor.cleanarchitecture.presentation.utils.*
-import com.gabor.cleanarchitecture.presentation.utils.statehandler.*
+import com.gabor.cleanarchitecture.presentation.utils.LocaleUtils
+import com.gabor.cleanarchitecture.presentation.utils.LogCompositions
+import com.gabor.cleanarchitecture.presentation.utils.MOVIE_DETAIL_PARAM
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.NavigationEvent
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.handleNetworkErrorEvent
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.observeNavigationEvent
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.observeState
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.observeViewEvent
 import com.gabor.cleanarchitecture.presentation.utils.views.toggleProgressBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
-
 
 /**
  * Movies list screen.
@@ -61,8 +66,8 @@ class MoviesFragment : Fragment() {
             // is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                AppTheme(){
-                val viewState by viewModel.viewState.observeAsState()
+                AppTheme() {
+                    val viewState by viewModel.viewState.observeAsState()
                     LogCompositions(TAG, "ComposeView called ${viewState?.listItems?.size}")
                     MoviesListView(
                         viewState?.listItems.orEmpty(),
@@ -73,7 +78,6 @@ class MoviesFragment : Fragment() {
                 }
             }
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -122,7 +126,6 @@ data class MovieViewItem(
     val description: String,
     val posterImageUrl: String
 )
-
 
 // View navigation
 data class OpenMovieDetails(val movieDetailsViewItem: MovieDetailsViewItem) : NavigationEvent()

@@ -15,17 +15,11 @@
  */
 package com.gabor.cleanarchitecture
 
-import com.gabor.cleanarchitecture.data.remote.SessionProvider
-import com.gabor.cleanarchitecture.domain.Result
 import com.gabor.cleanarchitecture.domain.contracts.MoviesRepository
 import com.gabor.cleanarchitecture.domain.movies.usecases.GetMoviesUseCase
 import com.gabor.cleanarchitecture.presentation.movies.MovieViewItem
-import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.spyk
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
-import org.junit.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -36,7 +30,7 @@ class GetMoviesUnitTest {
 
     private val movieTestObject = MovieViewItem(1, "Spider Man", "Some description", "url")
 
-    private val repository : MoviesRepository = mockk()
+    private val repository: MoviesRepository = mockk()
     private val getMoviesInteractor = spyk(GetMoviesUseCase(repository))
 
 //    @Test

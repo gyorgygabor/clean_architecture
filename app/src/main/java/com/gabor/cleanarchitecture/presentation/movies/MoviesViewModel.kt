@@ -24,10 +24,16 @@ import com.gabor.cleanarchitecture.domain.movies.usecases.GetMovieDetailsUseCase
 import com.gabor.cleanarchitecture.domain.movies.usecases.GetMoviesUseCase
 import com.gabor.cleanarchitecture.presentation.moviedetails.MovieDetailsViewItem
 import com.gabor.cleanarchitecture.presentation.utils.LocaleUtils
-import com.gabor.cleanarchitecture.presentation.utils.statehandler.*
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewEventHolder
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewEventHolderImpl
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewNavigationHolder
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewNavigationHolderImpl
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewStateHolder
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewStateHolderImpl
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.handleErrors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,21 +61,24 @@ class MoviesViewModel @Inject constructor(
 
     private fun loadMovies(moviesPagerIndex: Int) {
         viewModelScope.launch {
-            getMoviesUseCase(moviesPagerIndex).handle(onError = { error ->
-                Log.d(tag, "movies error response: $error")
-                // hide the progressbar
-                updateState {
-                    it!!.copy(showLoading = false)
+            getMoviesUseCase(moviesPagerIndex).handle(
+                onError = { error ->
+                    Log.d(tag, "movies error response: $error")
+                    // hide the progressbar
+                    updateState {
+                        it!!.copy(showLoading = false)
+                    }
+                    // pass the error to the error handler
+                    handleErrors(error) {
+                        // if the error handler can not handle the error, we can do it here
+                    }
+                },
+                onSuccess = { response ->
+                    Log.d(tag, "movies success response: $response")
+                    movies = movies + response
+                    updateUiList(movies)
                 }
-                // pass the error to the error handler
-                handleErrors(error) {
-                    // if the error handler can not handle the error, we can do it here
-                }
-            }, onSuccess = { response ->
-                Log.d(tag, "movies success response: $response")
-                movies = movies + response
-                updateUiList(movies)
-            })
+            )
         }
     }
 
@@ -108,26 +117,28 @@ class MoviesViewModel @Inject constructor(
     fun onOpenDetailsClicked(movie: MovieViewItem) {
         Log.d(tag, "onOpenDetailsClicked $movie")
         viewModelScope.launch {
-            getMovieDetailsUseCase(movie.id).handle({
-                handleErrors(it)
-            }, { movieDTO ->
-                val genreNames = movieDTO.genres?.map { it.name }.orEmpty()
-                val trailerUrl = movieDTO.videos?.results?.find { it.official }?.ytKey
-                    ?: movieDTO.videos?.results?.first()?.ytKey
-                val movieDetailsViewItem = MovieDetailsViewItem(
-                    title = movieDTO.title,
-                    description = movieDTO.overview,
-                    posterImageUrl = sessionProvider.STATIC_IMAGE_URL + movieDTO.posterPath,
-                    backdropImageUrl = sessionProvider.STATIC_IMAGE_URL + movieDTO.backdropPath,
-                    releaseDate = movieDTO.releaseDate,
-                    voteAvg = movieDTO.voteAverage,
-                    voteNr = movieDTO.voteCount,
-                    genre = genreNames,
-                    ytTrailerKey = trailerUrl ?: ""
-                )
-                newNavigationEvent(OpenMovieDetails(movieDetailsViewItem))
-            })
+            getMovieDetailsUseCase(movie.id).handle(
+                {
+                    handleErrors(it)
+                },
+                { movieDTO ->
+                    val genreNames = movieDTO.genres?.map { it.name }.orEmpty()
+                    val trailerUrl = movieDTO.videos?.results?.find { it.official }?.ytKey
+                        ?: movieDTO.videos?.results?.first()?.ytKey
+                    val movieDetailsViewItem = MovieDetailsViewItem(
+                        title = movieDTO.title,
+                        description = movieDTO.overview,
+                        posterImageUrl = sessionProvider.STATIC_IMAGE_URL + movieDTO.posterPath,
+                        backdropImageUrl = sessionProvider.STATIC_IMAGE_URL + movieDTO.backdropPath,
+                        releaseDate = movieDTO.releaseDate,
+                        voteAvg = movieDTO.voteAverage,
+                        voteNr = movieDTO.voteCount,
+                        genre = genreNames,
+                        ytTrailerKey = trailerUrl ?: ""
+                    )
+                    newNavigationEvent(OpenMovieDetails(movieDetailsViewItem))
+                }
+            )
         }
-
     }
 }
