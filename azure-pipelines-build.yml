@@ -18,13 +18,6 @@ steps:
 - task: DownloadSecureFile@1
   inputs:
     secureFile: 'movies_keystore'
-- task: AndroidSigning@3
-  inputs:
-    apkFiles: '**/*.apk'
-    apksignerKeystoreFile: 'movies_keystore'
-    apksignerKeystorePassword: '$(keystorePass)'
-    apksignerKeystoreAlias: '$(keystoreAlias)'
-    apksignerKeyPassword: '$(keystorePass)'
 - task: Gradle@2
   inputs:
     workingDirectory: ''
@@ -33,3 +26,11 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleDebug'
+- task: AndroidSigning@3
+  inputs:
+    apkFiles: '**/*.apk'
+    apksignerKeystoreFile: 'movies_keystore'
+    apksignerKeystorePassword: '$(keystorePass)'
+    apksignerKeystoreAlias: '$(keystoreAlias)'
+    apksignerKeyPassword: '$(keystorePass)'
+
