@@ -33,4 +33,13 @@ steps:
     apksignerKeystorePassword: '$(keystorePass)'
     apksignerKeystoreAlias: '$(keystoreAlias)'
     apksignerKeyPassword: '$(keystorePass)'
+- task: AppCenterDistribute@3
+  inputs:
+    serverEndpoint: 'App Center'
+    appSlug: 'HCL-Mobile/Movies'
+    appFile: 'app/debug/app-debug.apk'
+    symbolsOption: 'Android'
+    releaseNotesOption: 'input'
+    releaseNotesInput: 'First Azure build'
+    destinationType: 'groups'
 
