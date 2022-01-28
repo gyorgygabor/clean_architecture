@@ -12,7 +12,7 @@ import javax.inject.Inject
 class MoviesDetailsViewModel @Inject constructor() :
     ViewModel(),
     ViewEventHolder by ViewEventHolderImpl(),
-    ViewStateHolder<MovieDetailsViewItem> by ViewStateHolderImpl() {
+    ViewStateHolder<MovieDetailsViewState> by ViewStateHolderImpl() {
 
     private val tag = javaClass.simpleName
 
@@ -20,8 +20,11 @@ class MoviesDetailsViewModel @Inject constructor() :
     fun onViewInitialised(movieViewItem: MovieDetailsViewItem?) {
     // update the UI state
         updateState {
+            // map params to view state
             val releaseYear = movieViewItem?.releaseDate?.take(4).orEmpty()
-            movieViewItem!!.copy(releaseDate = releaseYear)
+            val updatedMovieDetails = movieViewItem!!.copy(releaseDate = releaseYear)
+            // send the new state
+            it!!.copy(movieDetails = updatedMovieDetails)
         }
     }
 }
