@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright $YEAR The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.gabor.cleanarchitecture.domain.contracts
-
-import com.gabor.cleanarchitecture.domain.movies.entities.GenresDTO
-import com.gabor.cleanarchitecture.domain.movies.entities.MovieDTO
-import com.gabor.cleanarchitecture.domain.movies.entities.MoviesDTO
-
-interface MoviesRepository {
-    suspend fun getMovies(language: String, page: Int): MoviesDTO
-    suspend fun getGenres(language: String): GenresDTO
-    suspend fun getMovieDetails(language: String, id: Int): MovieDTO
-}
