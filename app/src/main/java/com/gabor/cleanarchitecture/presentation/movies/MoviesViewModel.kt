@@ -52,7 +52,18 @@ class MoviesViewModel @Inject constructor(
     private var moviesPagerIndex = 1
     private var movies: List<MovieDTO> = arrayListOf()
 
-    fun onViewInitialised() {
+
+    fun onEvent(event: MoviesViewEvent) {
+        when (event) {
+            MoviesViewEvent.OnViewInitialized -> onViewInitialised()
+            MoviesViewEvent.OnBottomReached -> onBottomReached()
+            is MoviesViewEvent.OnConfigurationChanged -> onConfigurationChanged(event.newLocale)
+            is MoviesViewEvent.OnOpenDetailsClicked -> onOpenDetailsClicked(event.movie)
+        }
+    }
+
+
+    private fun onViewInitialised() {
         updateState {
             MoviesViewState(showLoading = true)
         }
@@ -98,7 +109,7 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun onConfigurationChanged(newLocale: Locale) {
+    private fun onConfigurationChanged(newLocale: Locale) {
         val isLocaleChanged = LocaleUtils.isLocaleChanged(appLocale, newLocale)
         Log.d(tag, "isLocaleChanged$isLocaleChanged")
         // reload the data with the new language
@@ -108,13 +119,13 @@ class MoviesViewModel @Inject constructor(
         appLocale = newLocale
     }
 
-    fun onBottomReached() {
+    private fun onBottomReached() {
         Log.d(tag, "onBottomReached")
         moviesPagerIndex++
         loadMovies(moviesPagerIndex)
     }
 
-    fun onOpenDetailsClicked(movie: MovieViewItem) {
+    private fun onOpenDetailsClicked(movie: MovieViewItem) {
         Log.d(tag, "onOpenDetailsClicked $movie")
         viewModelScope.launch {
             getMovieDetailsUseCase(movie.id).handle(

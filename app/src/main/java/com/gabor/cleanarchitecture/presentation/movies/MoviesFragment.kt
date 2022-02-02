@@ -71,8 +71,8 @@ class MoviesFragment : Fragment() {
                     LogCompositions(TAG, "ComposeView called ${viewState?.listItems?.size}")
                     MoviesListView(
                         viewState?.listItems.orEmpty(),
-                        viewModel::onBottomReached,
-                        viewModel::onOpenDetailsClicked
+                        { viewModel.onEvent(MoviesViewEvent.OnBottomReached) },
+                        { viewModel.onEvent(MoviesViewEvent.OnOpenDetailsClicked(it)) }
                     )
                     EmptyListView(viewState?.listItems.isNullOrEmpty())
                 }
@@ -83,7 +83,7 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
-        viewModel.onViewInitialised()
+        viewModel.onEvent(MoviesViewEvent.OnViewInitialized)
     }
 
     private fun setupListeners() {
@@ -110,7 +110,7 @@ class MoviesFragment : Fragment() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        viewModel.onConfigurationChanged(newConfig.locales.get(0) ?: LocaleUtils.getCurrentLocale())
+        viewModel.onEvent(MoviesViewEvent.OnConfigurationChanged(newConfig.locales.get(0) ?: LocaleUtils.getCurrentLocale()))
     }
 }
 
