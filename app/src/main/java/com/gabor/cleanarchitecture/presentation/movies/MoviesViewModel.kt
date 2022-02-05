@@ -52,7 +52,6 @@ class MoviesViewModel @Inject constructor(
     private var moviesPagerIndex = 1
     private var movies: List<MovieDTO> = arrayListOf()
 
-
     fun onEvent(event: MoviesViewEvent) {
         when (event) {
             MoviesViewEvent.OnViewInitialized -> onViewInitialised()
@@ -61,7 +60,6 @@ class MoviesViewModel @Inject constructor(
             is MoviesViewEvent.OnOpenDetailsClicked -> onOpenDetailsClicked(event.movie)
         }
     }
-
 
     private fun onViewInitialised() {
         updateState {
