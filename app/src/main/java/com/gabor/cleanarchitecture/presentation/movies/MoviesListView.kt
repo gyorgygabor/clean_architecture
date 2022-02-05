@@ -40,6 +40,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,8 +61,7 @@ import com.gabor.cleanarchitecture.presentation.utils.views.isScrolledToEnd
 @Composable
 fun MoviesListView(
     listItems: List<MovieViewItem>,
-    onBottomReached: () -> Unit,
-    openDetailsListener: (MovieViewItem) -> Unit
+    onEvent: (MoviesViewEvent) -> Unit
 ) {
     LogCompositions(TAG, "MoviesListView called ${listItems.size}")
     val listState = rememberLazyListState()
@@ -76,7 +76,7 @@ fun MoviesListView(
                     .height(150.dp)
                     .fillMaxWidth()
                     .clickable {
-                        openDetailsListener(movie)
+                        onEvent(MoviesViewEvent.OnOpenDetailsClicked(movie))
                     }
             ) {
                 Row() {
@@ -130,9 +130,9 @@ fun MoviesListView(
         Loader()
     }
     if (isBottomReached) {
-        onBottomReached()
+        onEvent(MoviesViewEvent.OnBottomReached)
     }
-    // todo at the first bottom reach, onBottomReached is called twice so 60 items will be loaded. Investigate why.
+    // todo at the first bottom reach, onBottomReached is called twice so 60 items will be loaded.
 }
 
 @Composable
@@ -164,5 +164,5 @@ fun EmptyListView(empty: Boolean) {
 fun MoviesPreview(
     @PreviewParameter(MoviesPreviewParameterProvider::class) listItems: List<MovieViewItem>
 ) {
-    MoviesListView(listItems, {}, {})
+    MoviesListView(listItems, {})
 }

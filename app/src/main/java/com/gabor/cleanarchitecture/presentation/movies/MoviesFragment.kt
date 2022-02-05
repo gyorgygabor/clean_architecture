@@ -71,8 +71,7 @@ class MoviesFragment : Fragment() {
                     LogCompositions(TAG, "ComposeView called ${viewState?.listItems?.size}")
                     MoviesListView(
                         viewState?.listItems.orEmpty(),
-                        { viewModel.onEvent(MoviesViewEvent.OnBottomReached) },
-                        { viewModel.onEvent(MoviesViewEvent.OnOpenDetailsClicked(it)) }
+                        viewModel::onEvent
                     )
                     EmptyListView(viewState?.listItems.isNullOrEmpty())
                 }
