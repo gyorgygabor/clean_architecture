@@ -20,7 +20,6 @@ import com.gabor.cleanarchitecture.data.remote.AuthInterceptor
 import com.gabor.cleanarchitecture.data.remote.MoviesRepositoryImpl
 import com.gabor.cleanarchitecture.data.remote.SessionProvider
 import com.gabor.cleanarchitecture.domain.contracts.MoviesRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,21 +28,14 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 /**
  * Hilt Dependency Injection module
  */
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
-
-    @Binds
-    abstract fun bindMoviesRepository(moviesRepositoryImpl: MoviesRepositoryImpl): MoviesRepository
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-object DataModule {
+object AppModule {
 
     @Provides
     fun provideSessionProvider(): SessionProvider {
@@ -70,5 +62,11 @@ object DataModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMoviesRepository(apiService: ApiService): MoviesRepository {
+        return MoviesRepositoryImpl(apiService)
     }
 }
