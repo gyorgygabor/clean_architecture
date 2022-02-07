@@ -17,9 +17,9 @@ package com.gabor.cleanarchitecture.presentation.utils.viewbinding
 
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 
 /**
@@ -43,18 +43,15 @@ interface ViewBindingHolder<T : ViewBinding> {
     fun requireBinding(block: (T.() -> Unit)? = null): T
 }
 
-open class ViewBindingHolderImpl<T : ViewBinding> : ViewBindingHolder<T>, LifecycleObserver {
+open class ViewBindingHolderImpl<T : ViewBinding> : ViewBindingHolder<T>, DefaultLifecycleObserver {
 
     private var binding: T? = null
 
     private lateinit var lifecycle: Lifecycle
     internal lateinit var fragmentName: String
 
-    /**
-     * To not leak memory we nullify the binding when the view is destroyed.
-     */
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    open fun onDestroyView() {
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
         lifecycle.removeObserver(this) // not mandatory, but preferred
         binding = null
     }

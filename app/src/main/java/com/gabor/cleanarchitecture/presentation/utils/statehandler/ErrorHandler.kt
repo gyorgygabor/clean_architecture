@@ -28,11 +28,10 @@ import javax.net.ssl.SSLHandshakeException
  */
 fun Fragment.observeNetworkErrorEvents(viewModel: ViewEventHolder) {
     viewModel.viewEvents.observe(
-        viewLifecycleOwner,
-        {
-            handleNetworkErrorEvent(it)
-        }
-    )
+        viewLifecycleOwner
+    ) {
+        handleNetworkErrorEvent(it)
+    }
 }
 
 fun Fragment.handleNetworkErrorEvent(it: ViewEvent?) {
