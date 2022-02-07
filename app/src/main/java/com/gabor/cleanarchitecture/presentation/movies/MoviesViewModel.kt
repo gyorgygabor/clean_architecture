@@ -19,6 +19,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gabor.cleanarchitecture.data.remote.SessionProvider
+import com.gabor.cleanarchitecture.domain.Result
 import com.gabor.cleanarchitecture.domain.movies.entities.MovieDTO
 import com.gabor.cleanarchitecture.domain.movies.usecases.GetMovieDetailsUseCase
 import com.gabor.cleanarchitecture.domain.movies.usecases.GetMoviesUseCase
@@ -33,6 +34,8 @@ import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewStateHold
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewStateHolderImpl
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.handleErrors
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -70,26 +73,26 @@ class MoviesViewModel @Inject constructor(
     }
 
     private fun loadMovies(moviesPagerIndex: Int) {
-        viewModelScope.launch {
-            getMoviesUseCase(moviesPagerIndex).handle(
-                onError = { error ->
-                    Log.d(tag, "movies error response: $error")
+        getMoviesUseCase(moviesPagerIndex).onEach {
+            when (it) {
+                is Result.Failure -> {
+                    Log.d(tag, "movies error response: ${it.error}")
                     // hide the progressbar
                     updateState {
                         it!!.copy(showLoading = false)
                     }
                     // pass the error to the error handler
-                    handleErrors(error) {
+                    handleErrors(it.error) {
                         // if the error handler can not handle the error, we can do it here
                     }
-                },
-                onSuccess = { response ->
-                    Log.d(tag, "movies success response: $response")
-                    movies = movies + response
+                }
+                is Result.Success -> {
+                    Log.d(tag, "movies success response: ${it.data}")
+                    movies = movies + it.data
                     updateUiList(movies)
                 }
-            )
-        }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun updateUiList(movies: List<MovieDTO>) {
@@ -126,12 +129,13 @@ class MoviesViewModel @Inject constructor(
 
     private fun onOpenDetailsClicked(movie: MovieViewItem) {
         Log.d(tag, "onOpenDetailsClicked $movie")
-        viewModelScope.launch {
-            getMovieDetailsUseCase(movie.id).handle(
-                {
-                    handleErrors(it)
-                },
-                { movieDTO ->
+        getMovieDetailsUseCase(movie.id).onEach {
+            Log.d(tag, "getMovieDetailsUseCase result $it")
+            when (it) {
+                is Result.Failure -> handleErrors(it.error)
+                is Result.Success -> {
+                    val movieDTO = it.data
+
                     val genreNames = movieDTO.genres?.map { it.name }.orEmpty()
                     val trailerUrl = movieDTO.videos?.results?.find { it.official }?.ytKey
                         ?: movieDTO.videos?.results?.first()?.ytKey
@@ -148,8 +152,8 @@ class MoviesViewModel @Inject constructor(
                     )
                     sendNavEvent(OpenMovieDetails(movieDetailsViewItem))
                 }
-            )
-        }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun sendNavEvent(navEvent: NavigationEvent) =

@@ -38,11 +38,13 @@ import javax.inject.Singleton
 object AppModule {
 
     @Provides
+    @Singleton
     fun provideSessionProvider(): SessionProvider {
         return SessionProvider()
     }
 
     @Provides
+    @Singleton
     fun provideOkHttpClient(sessionProvider: SessionProvider): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -55,6 +57,7 @@ object AppModule {
     }
 
     @Provides
+    @Singleton
     fun provideApiService(okHttpClient: OkHttpClient, sessionProvider: SessionProvider): ApiService {
         return Retrofit.Builder()
             .baseUrl(sessionProvider.BASE_URL)

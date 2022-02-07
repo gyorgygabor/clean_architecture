@@ -38,7 +38,7 @@ class MoviesDetailsViewModel @Inject constructor() :
             val releaseYear = movieViewItem?.releaseDate?.take(4).orEmpty()
             val updatedMovieDetails = movieViewItem!!.copy(releaseDate = releaseYear)
             // send the new state
-            it!!.copy(movieDetails = updatedMovieDetails)
+            MovieDetailsViewState(movieDetails = updatedMovieDetails)
         }
     }
 }

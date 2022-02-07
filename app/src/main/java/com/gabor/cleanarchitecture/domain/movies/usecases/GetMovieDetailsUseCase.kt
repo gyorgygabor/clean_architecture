@@ -15,13 +15,14 @@
  */
 package com.gabor.cleanarchitecture.domain.movies.usecases
 
-import com.gabor.cleanarchitecture.domain.Interactor
 import com.gabor.cleanarchitecture.domain.Result
 import com.gabor.cleanarchitecture.domain.Result.Companion.failure
 import com.gabor.cleanarchitecture.domain.Result.Companion.success
 import com.gabor.cleanarchitecture.domain.contracts.MoviesRepository
 import com.gabor.cleanarchitecture.domain.movies.entities.MovieDTO
 import com.gabor.cleanarchitecture.presentation.utils.LocaleUtils
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -29,16 +30,16 @@ import javax.inject.Inject
  */
 class GetMovieDetailsUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository
-) : Interactor<Int, MovieDTO>() {
+) {
 
-    override suspend fun run(params: Int): Result<Throwable, MovieDTO> {
-        val movies = try {
+    operator fun invoke(pageIndex: Int): Flow<Result<Throwable, MovieDTO>> = flow {
+        try {
             val locale = LocaleUtils.getCurrentLocaleAsString()
-            moviesRepository.getMovieDetails(locale, params)
+            val movies = moviesRepository.getMovieDetails(locale, pageIndex)
+            emit(success(movies))
         } catch (e: Exception) {
             // Failures are handled by the general error handler. See: ErrorHandler
-            return failure(e)
+            emit(failure(e))
         }
-        return success(movies)
     }
 }

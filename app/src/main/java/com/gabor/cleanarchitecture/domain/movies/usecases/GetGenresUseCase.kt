@@ -15,14 +15,14 @@
  */
 package com.gabor.cleanarchitecture.domain.movies.usecases
 
-import com.gabor.cleanarchitecture.domain.Interactor
-import com.gabor.cleanarchitecture.domain.None
 import com.gabor.cleanarchitecture.domain.Result
 import com.gabor.cleanarchitecture.domain.Result.Companion.failure
 import com.gabor.cleanarchitecture.domain.Result.Companion.success
 import com.gabor.cleanarchitecture.domain.contracts.MoviesRepository
 import com.gabor.cleanarchitecture.domain.movies.entities.GenresDTO
 import com.gabor.cleanarchitecture.presentation.utils.LocaleUtils
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -30,16 +30,16 @@ import javax.inject.Inject
  */
 class GetGenresUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository
-) : Interactor<None, GenresDTO>() {
+) {
 
-    override suspend fun run(params: None): Result<Throwable, GenresDTO> {
-        val genres = try {
+    operator fun invoke(): Flow<Result<Throwable, GenresDTO>> = flow {
+        try {
             val locale = LocaleUtils.getCurrentLocaleAsString()
-            moviesRepository.getGenres(locale)
+            val genres = moviesRepository.getGenres(locale)
+            emit(success(genres))
         } catch (e: Exception) {
             // Failures are handled by the general error handler. See: ErrorHandler
-            return failure(e)
+            emit(failure(e))
         }
-        return success(genres)
     }
 }

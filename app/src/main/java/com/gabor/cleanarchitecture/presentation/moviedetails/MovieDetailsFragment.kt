@@ -24,8 +24,8 @@ import android.view.ViewGroup
 import androidx.annotation.Keep
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.tooling.preview.Devices
@@ -63,7 +63,7 @@ class MovieDetailsFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 AppTheme {
-                    val viewState by viewModel.viewState.observeAsState()
+                    val viewState by viewModel.viewState.collectAsState()
                     viewState?.let { MoviesDetailsView(movieDetails = it.movieDetails) }
                 }
             }
@@ -107,8 +107,6 @@ class MovieDetailsFragment : Fragment() {
 
 // View state
 data class MovieDetailsViewState(
-    val showLoading: Boolean = false,
-    val isCollectionLoaded: Boolean = false,
     val movieDetails: MovieDetailsViewItem
 )
 
