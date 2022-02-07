@@ -16,35 +16,38 @@
 package com.gabor.cleanarchitecture.presentation.utils.statehandler
 
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 
 /**
- * LiveData wrapper which is used for view events like: dialogs, snack-bars.
+ * Flow wrapper which is used for view events like: dialogs, snack-bars.
  */
 class ViewNavigationHolderImpl : ViewNavigationHolder {
-    private val _navigationEvents = SingleLiveEvent<NavigationEvent>()
+    private val _navigationEvents = MutableSharedFlow<NavigationEvent>()
 
-    override fun newNavigationEvent(event: NavigationEvent) {
-        _navigationEvents.value = event
+    override suspend fun newNavigationEvent(event: NavigationEvent) {
+        _navigationEvents.emit(event)
     }
 
-    override val navigationEvents: LiveData<NavigationEvent>
-        get() = _navigationEvents
+    override val navigationEvents: SharedFlow<NavigationEvent>
+        get() = _navigationEvents.asSharedFlow()
 }
 
 interface ViewNavigationHolder {
 
-    fun newNavigationEvent(event: NavigationEvent)
-    val navigationEvents: LiveData<NavigationEvent>
+    suspend fun newNavigationEvent(event: NavigationEvent)
+    val navigationEvents: SharedFlow<NavigationEvent>
 }
 
 fun Fragment.observeNavigationEvent(viewEventHolder: ViewNavigationHolder, onUpdate: (NavigationEvent) -> Unit) {
-    viewEventHolder.navigationEvents.observe(
-        viewLifecycleOwner,
-        {
-            onUpdate(it)
+    lifecycleScope.launchWhenStarted {
+        viewEventHolder.navigationEvents.collectLatest { state ->
+            onUpdate(state)
         }
-    )
+    }
 }
 
 open class NavigationEvent

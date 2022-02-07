@@ -40,11 +40,10 @@ interface ViewEventHolder {
 
 fun Fragment.observeViewEvent(viewEventHolder: ViewEventHolder, onUpdate: (ViewEvent) -> Unit) {
     viewEventHolder.viewEvents.observe(
-        viewLifecycleOwner,
-        {
-            onUpdate(it)
-        }
-    )
+        viewLifecycleOwner
+    ) {
+        onUpdate(it)
+    }
 }
 
 open class ViewEvent {

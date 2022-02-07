@@ -24,6 +24,7 @@ import com.gabor.cleanarchitecture.domain.movies.usecases.GetMovieDetailsUseCase
 import com.gabor.cleanarchitecture.domain.movies.usecases.GetMoviesUseCase
 import com.gabor.cleanarchitecture.presentation.moviedetails.MovieDetailsViewItem
 import com.gabor.cleanarchitecture.presentation.utils.LocaleUtils
+import com.gabor.cleanarchitecture.presentation.utils.statehandler.NavigationEvent
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewEventHolder
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewEventHolderImpl
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.ViewNavigationHolder
@@ -145,9 +146,14 @@ class MoviesViewModel @Inject constructor(
                         genre = genreNames,
                         ytTrailerKey = trailerUrl ?: ""
                     )
-                    newNavigationEvent(OpenMovieDetails(movieDetailsViewItem))
+                    sendNavEvent(OpenMovieDetails(movieDetailsViewItem))
                 }
             )
         }
     }
+
+    private fun sendNavEvent(navEvent: NavigationEvent) =
+        viewModelScope.launch {
+            newNavigationEvent(navEvent)
+        }
 }

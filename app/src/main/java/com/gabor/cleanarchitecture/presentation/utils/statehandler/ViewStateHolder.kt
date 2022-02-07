@@ -16,35 +16,40 @@
 package com.gabor.cleanarchitecture.presentation.utils.statehandler
 
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 
 /**
- * LiveData wrapper which is used for view states.
+ * Flow wrapper which is used for view states.
  */
 class ViewStateHolderImpl<T> : ViewStateHolder<T> {
-    private val _viewState = MutableLiveData<T>()
+
+    private val _viewState = MutableStateFlow<T?>(null)
 
     override fun updateState(stateCopy: (T?) -> T) {
         val oldState = _viewState.value
-        _viewState.value = stateCopy(oldState) // TODO find a solution for the initial state nullability without forcing the user to have non-null initial state
+        _viewState.value = stateCopy(oldState)
     }
 
-    override val viewState: LiveData<T>
-        get() = _viewState
+    override val viewState: StateFlow<T?>
+        get() = _viewState.asStateFlow()
 }
 
 interface ViewStateHolder<T> {
 
     fun updateState(stateCopy: (T?) -> T)
-    val viewState: LiveData<T>
+    val viewState: StateFlow<T?>
 }
 
 fun <T> Fragment.observeState(viewStateHolder: ViewStateHolder<T>, onUpdate: (T) -> Unit) {
-    viewStateHolder.viewState.observe(
-        viewLifecycleOwner,
-        {
-            onUpdate(it)
+    lifecycleScope.launchWhenStarted {
+        viewStateHolder.viewState.collectLatest { state ->
+            state?.let {
+                onUpdate(it)
+            }
         }
-    )
+    }
 }

@@ -21,8 +21,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
@@ -67,7 +67,7 @@ class MoviesFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 AppTheme() {
-                    val viewState by viewModel.viewState.observeAsState()
+                    val viewState by viewModel.viewState.collectAsState()
                     LogCompositions(TAG, "ComposeView called ${viewState?.listItems?.size}")
                     MoviesListView(
                         viewState?.listItems.orEmpty(),
