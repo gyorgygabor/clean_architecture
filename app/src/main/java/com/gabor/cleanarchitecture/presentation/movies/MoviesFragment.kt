@@ -20,26 +20,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gabor.cleanarchitecture.R
+import com.gabor.cleanarchitecture.databinding.FragmentMoviesBinding
 import com.gabor.cleanarchitecture.presentation.moviedetails.MovieDetailsViewItem
-import com.gabor.cleanarchitecture.presentation.theme.AppTheme
 import com.gabor.cleanarchitecture.presentation.utils.LocaleUtils
-import com.gabor.cleanarchitecture.presentation.utils.LogCompositions
 import com.gabor.cleanarchitecture.presentation.utils.MOVIE_DETAIL_PARAM
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.NavigationEvent
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.handleNetworkErrorEvent
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.observeNavigationEvent
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.observeState
 import com.gabor.cleanarchitecture.presentation.utils.statehandler.observeViewEvent
+import com.gabor.cleanarchitecture.presentation.utils.viewbinding.ViewBindingHolder
+import com.gabor.cleanarchitecture.presentation.utils.viewbinding.ViewBindingHolderImpl
 import com.gabor.cleanarchitecture.presentation.utils.views.toggleProgressBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -51,37 +49,24 @@ const val TAG = "MoviesFragment"
 
 @InternalCoroutinesApi
 @AndroidEntryPoint
-class MoviesFragment : Fragment() {
+class MoviesFragment :
+    Fragment(),
+    ViewBindingHolder<FragmentMoviesBinding> by ViewBindingHolderImpl() {
 
     private val viewModel by viewModels<MoviesViewModel>()
 
-    @ExperimentalAnimationApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return ComposeView(requireContext()).apply {
-            // Dispose of the Composition when the view's LifecycleOwner
-            // is destroyed
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme() {
-                    val viewState by viewModel.viewState.collectAsState()
-                    LogCompositions(TAG, "ComposeView called ${viewState?.listItems?.size}")
-                    MoviesListView(
-                        viewState?.listItems.orEmpty(),
-                        viewModel::onEvent
-                    )
-                    EmptyListView(viewState?.listItems.isNullOrEmpty())
-                }
-            }
-        }
+        return initBinding(FragmentMoviesBinding.inflate(inflater, container, false), this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
+        setupViews()
         viewModel.onEvent(MoviesViewEvent.OnViewInitialized)
     }
 
@@ -89,6 +74,10 @@ class MoviesFragment : Fragment() {
         // observe the view states
         observeState(viewModel) {
             toggleProgressBar(it.showLoading)
+            toggleEmptyListView(it.listItems.isEmpty())
+            requireBinding().recyclerView.adapter = MoviesAdapter(it.listItems) {
+                viewModel.onEvent(MoviesViewEvent.OnOpenDetailsClicked(it))
+            }
         }
 
         // observe the view events
@@ -107,9 +96,25 @@ class MoviesFragment : Fragment() {
         }
     }
 
+    private fun toggleEmptyListView(isEmpty: Boolean) {
+        requireBinding().emptyListView.visibility = if (isEmpty) View.VISIBLE else View.GONE
+    }
+
+    private fun setupViews() {
+        requireBinding {
+            val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(requireContext())
+            recyclerView.layoutManager = layoutManager
+            recyclerView.adapter = MoviesAdapter(arrayListOf()) {}
+        }
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        viewModel.onEvent(MoviesViewEvent.OnConfigurationChanged(newConfig.locales.get(0) ?: LocaleUtils.getCurrentLocale()))
+        viewModel.onEvent(
+            MoviesViewEvent.OnConfigurationChanged(
+                newConfig.locales.get(0) ?: LocaleUtils.getCurrentLocale()
+            )
+        )
     }
 }
 
